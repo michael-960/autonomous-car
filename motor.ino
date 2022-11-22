@@ -4,6 +4,8 @@ const uint8_t SPEED = 8;
 
 const int TIME = 2000;
 
+// laura was here
+
 void motorSetup4() {
   
   for(int i=0; i<4; ++i) {
