@@ -1,28 +1,55 @@
 #include <AFMotor.h>
-#include <Servo.h>              
+#include <Adafruit_MotorShield.h>
+#include <Servo.h>
 
-Servo name_servo;               
+#include "car.h"
 
-int servo_position = 0 ;
+#define FLAG 1
+
+
+AF_DCMotor motors[] = {AF_DCMotor(1), AF_DCMotor(2), AF_DCMotor(3), AF_DCMotor(4)};
+
+Car* car;
+
+int counter = 0;
 
 void setup() {
-  
-  // Define the servo signal pins
-name_servo.attach (9);         
 
+  car = new Car(motors);
+
+  if (FLAG) {
+    sensorSetup();
+  }
 
 }
+
+
 
 void loop() {
- for (servo_position = 0; servo_position <=180; servo_position +=1){
+  
+  double distance;
 
-    name_servo.write(servo_position);
+  if (FLAG) {
+    distance = sensorReadDistance();
+    
+    Serial.println(distance);
+
+    if (counter % 400 == 0) {
+      car->release();
+      delay(100);
+      car->forward(200);
+    }
+
+    if (counter % 400 == 200) {
+      car->release();
+      delay(100);
+      car->backward(200);
+    }
+
     delay(10);
-  }
 
-  for (servo_position=180; servo_position >= 0; servo_position -=1){
-
-    name_servo.write(servo_position);
-    delay(10);
+    counter += 1;
+    counter %= 400;
   }
 }
+
