@@ -6,8 +6,8 @@ Car::Car(AF_DCMotor* motors) {
 
   this->motor1 = motors;
   this->motor2 = motors+1;
-  this->motor3 = motors+1;
-  this->motor4 = motors+1;
+  this->motor3 = motors+2;
+  this->motor4 = motors+3;
 
   for (int i=0; i<4; ++i) {
     this->speed[i] = 0;
@@ -34,9 +34,34 @@ void Car::backward(uint8_t speed) {
   }
 }
 
-void Car::left(uint8_t speed, uint8_t angle) {
+void Car::left(uint8_t speed) {
 
-  //this->motor1->;
+  for(int i=0; i<4; ++i) {
+    if (i>=2) {
+      (this->motors+i)->run(FORWARD);
+    }
+    else {
+      (this->motors+i)->run(BACKWARD);
+    }
+
+    (this->motors+i)->setSpeed(speed);
+  }
+  
+}
+
+void Car::right(uint8_t speed) {
+
+  for(int i=0; i<4; ++i) {
+    if (i<2) {
+      (this->motors+i)->run(FORWARD);
+    }
+    else {
+      (this->motors+i)->run(BACKWARD);
+    }
+
+    (this->motors+i)->setSpeed(speed);
+  }
+  
 }
 
 void Car::release() {

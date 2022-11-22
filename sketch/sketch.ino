@@ -2,10 +2,11 @@
 #include <Adafruit_MotorShield.h>
 #include <Servo.h>
 
+#include <math.h>
+
 #include "car.h"
 
-#define FLAG 1
-
+#define FLAG
 
 AF_DCMotor motors[] = {AF_DCMotor(1), AF_DCMotor(2), AF_DCMotor(3), AF_DCMotor(4)};
 
@@ -13,43 +14,37 @@ Car* car;
 
 int counter = 0;
 
+#ifdef FLAG
+
 void setup() {
 
+  sensorSetup();
+  servoSetup();
   car = new Car(motors);
-
-  if (FLAG) {
-    sensorSetup();
-  }
-
+  counter = 0;
+  
 }
-
 
 
 void loop() {
   
   double distance;
 
-  if (FLAG) {
-    distance = sensorReadDistance();
-    
-    Serial.println(distance);
+  distance = sensorReadDistance();
 
-    if (counter % 400 == 0) {
-      car->release();
-      delay(100);
-      car->forward(200);
-    }
+  car->left(200);
+  delay(1000);
 
-    if (counter % 400 == 200) {
-      car->release();
-      delay(100);
-      car->backward(200);
-    }
+  car->release();
+  delay(1000);
 
-    delay(10);
-
-    counter += 1;
-    counter %= 400;
-  }
+  
 }
+
+#else
+
+void setup(){} 
+void loop(){}
+
+#endif
 
