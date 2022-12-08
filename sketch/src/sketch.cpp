@@ -33,14 +33,16 @@ void sketch::setup() {
   servo.write(180);
   delay(500);
   servo.write(0);
+  delay(500);
+  servo.write(90);
   Serial.println("__arduino_started__");
 }
 
 void sketch::loop() {
 
-  // double distance;
-  // distance = sensor->readDistance();
-  // Serial.println(distance);
+  double distance;
+  distance = sensor->readDistance();
+  Serial.println(distance);
 
   while (Serial.available()) {
     serialProcessor->push(Serial.read());
