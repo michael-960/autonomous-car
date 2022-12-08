@@ -12,7 +12,6 @@ void servoSetup() {
   // Define the servo signal pins
   name_servo.attach(SERVO_PIN);         
 
-
 }
 
 void servoLoop() {
